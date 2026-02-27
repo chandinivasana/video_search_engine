@@ -59,7 +59,7 @@ export function SearchBar({ onSearch, isSearching, disabled }: SearchBarProps) {
               </>
             ) : (
               <>
-                <Sparkles className="h-3 w-3" />
+                <Search className="h-3 w-3" />
                 <span>Search</span>
               </>
             )}

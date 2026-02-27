@@ -15,23 +15,9 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   title: 'Semantic Video Search — AI-Powered Video Search Engine',
   description: 'Search inside videos using natural language. Upload a video and find exact timestamps with AI-powered semantic search.',
-  generator: 'v0.app',
   icons: {
-    icon: [
-      {
-        url: '/icon-light-32x32.png',
-        media: '(prefers-color-scheme: light)',
-      },
-      {
-        url: '/icon-dark-32x32.png',
-        media: '(prefers-color-scheme: dark)',
-      },
-      {
-        url: '/icon.svg',
-        type: 'image/svg+xml',
-      },
-    ],
-    apple: '/apple-icon.png',
+    icon: '/logo.png',
+    apple: '/logo.png',
   },
 }
 
