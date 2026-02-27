@@ -1,6 +1,6 @@
 "use client"
 
-import { Loader2, Brain, FileSearch } from "lucide-react"
+import { Loader2, FileVideo, FileSearch } from "lucide-react"
 import { Progress } from "@/components/ui/progress"
 import { useEffect, useState } from "react"
 
@@ -49,7 +49,7 @@ export function IndexingOverlay({ isIndexing }: IndexingOverlayProps) {
       <div className="flex flex-col items-center gap-4 px-6 py-8">
         <div className="relative">
           <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10">
-            <Brain className="h-7 w-7 text-primary" />
+            <FileVideo className="h-7 w-7 text-primary" />
           </div>
           <div className="absolute -bottom-1 -right-1 flex h-6 w-6 items-center justify-center rounded-full bg-card shadow-sm ring-2 ring-primary/20">
             <Loader2 className="h-3.5 w-3.5 animate-spin text-primary" />
@@ -79,7 +79,7 @@ export function EmptyState() {
       <div className="text-center">
         <h3 className="text-sm font-semibold text-foreground">No results yet</h3>
         <p className="mt-1 max-w-sm text-xs leading-relaxed text-muted-foreground">
-          Upload a video and ask a question to search through its content using AI-powered semantic search.
+          Upload a video and ask a question to search through its content using semantic search technology.
         </p>
       </div>
     </div>

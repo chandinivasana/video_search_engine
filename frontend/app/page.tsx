@@ -193,7 +193,7 @@ export default function SemanticVideoSearch() {
       <footer className="border-t border-border/60 py-6">
         <div className="mx-auto max-w-3xl px-6">
           <p className="text-center text-xs text-muted-foreground">
-            Powered by AI semantic search. Results are ranked by relevance.
+            Search Engine. Results are ranked by relevance.
           </p>
         </div>
       </footer>

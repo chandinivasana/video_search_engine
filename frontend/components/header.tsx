@@ -14,14 +14,14 @@ export function Header() {
               Semantic Video Search
             </h1>
             <p className="text-xs text-muted-foreground">
-              Search inside videos using AI
+              Search inside videos with precision
             </p>
           </div>
         </div>
         <div className="flex items-center gap-2">
           <div className="hidden items-center gap-1.5 rounded-lg bg-secondary px-3 py-1.5 text-xs font-medium text-muted-foreground sm:flex">
             <Search className="h-3 w-3" />
-            <span>AI-Powered</span>
+            <span>Search Engine</span>
           </div>
         </div>
       </div>
