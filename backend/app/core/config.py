@@ -12,6 +12,10 @@ class Settings(BaseSettings):
     WHISPER_MODEL: str = "base"
     EMBEDDING_MODEL: str = "all-MiniLM-L6-v2"
     
+    # DB and Queue
+    DATABASE_URL: str = "postgresql://postgres:postgres@localhost:5432/video_search"
+    CELERY_BROKER_URL: str = "redis://localhost:6379/0"
+    
     class Config:
         env_file = ".env"
 
