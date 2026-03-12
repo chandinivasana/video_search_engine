@@ -1,16 +1,20 @@
-# Semantic Video Search Engine
+# AI-Powered Video Search Engine
 
-A full-stack application for searching inside videos using AI (Whisper for transcription and Sentence Transformers for semantic search).
+A high-performance semantic search platform that transcribes videos using OpenAI Whisper, generates embeddings via Sentence Transformers, and enables millisecond-latency timestamp retrieval using FAISS.
 
 ## Features
-- **Video Upload**: Upload video files for processing.
-- **AI Transcription**: Automatic transcription using OpenAI Whisper.
-- **Semantic Search**: Search for specific moments using natural language.
-- **Video Player Integration**: Jump directly to the relevant moment in the video.
+- **Video Upload & Processing**: Supports video uploads with automated audio extraction using FFmpeg.
+- **AI Transcription**: High-accuracy transcription using OpenAI Whisper.
+- **Semantic Search**: Natural language query interface for finding specific moments.
+- **Async Task Queue**: Integrated **Redis** and **Celery** for background video processing and embedding generation.
+- **Persistent Storage**: **PostgreSQL** for managing video metadata and search history.
+- **Vector Search**: **FAISS** integration for efficient similarity search across transcribed segments.
+- **Interactive UI**: Next.js frontend with integrated video player for instant timestamp jumping.
 
 ## Prerequisites
 - Python 3.9+
 - Node.js 18+
+- Docker & Docker Compose (for PostgreSQL and Redis)
 - `ffmpeg` (required for Whisper audio extraction)
   - macOS: `brew install ffmpeg`
   - Linux: `sudo apt install ffmpeg`
@@ -18,31 +22,41 @@ A full-stack application for searching inside videos using AI (Whisper for trans
 ## Setup & Run
 
 ### 1. Automatic Setup
-Use the provided setup script to initialize both backend and frontend:
+Ensure Docker is running, then use the setup script to initialize the infrastructure, backend, and frontend:
 ```bash
 chmod +x setup.sh
 ./setup.sh
 ```
 
-### 2. Manual Run
+### 2. Running the Application
+The application requires three components to be running:
 
-#### Backend
+#### Infrastructure
+Already started by `setup.sh`, but can be manually managed:
 ```bash
-cd backend
-source venv/bin/activate
-uvicorn app.main:app --reload
+docker compose up -d
 ```
-The backend will be available at `http://localhost:8000`.
+
+#### Backend API & Worker
+In two separate terminals:
+```bash
+# Terminal 1: API Server
+cd backend && source venv/bin/activate
+uvicorn app.main:app --reload
+
+# Terminal 2: Celery Worker
+cd backend && source venv/bin/activate
+celery -A app.worker.celery_app worker --loglevel=info
+```
 
 #### Frontend (Next.js)
 ```bash
 cd frontend
 npm run dev
 ```
-The frontend will be available at `http://localhost:3000`.
 
-## How it works
-1. **Upload**: The video is uploaded to the backend.
-2. **Process**: The backend transcribes the video into segments using Whisper and generates semantic embeddings for each segment.
-3. **Search**: When you search, your query is embedded and compared against the video segments using FAISS (Vector DB).
-4. **Result**: The most relevant moments are shown with timestamps, allowing you to click and play from that point.
+## Architecture
+1. **Upload**: Video is stored and metadata is recorded in **PostgreSQL**.
+2. **Async Processing**: A **Celery** task is triggered via **Redis**, transcribing the video with **Whisper** and generating embeddings.
+3. **Indexing**: Processed segments and embeddings are stored in a **FAISS** vector store for rapid retrieval.
+4. **Search**: Queries are embedded and matched against the vector store; history is persisted in PostgreSQL.
