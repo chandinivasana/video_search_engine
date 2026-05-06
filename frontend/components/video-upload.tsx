@@ -1,7 +1,7 @@
 "use client"
 
 import { useCallback, useState, useRef } from "react"
-import { Upload, FileVideo, X } from "lucide-react"
+import { Upload, FileVideo, X, PlayCircle, Loader2 } from "lucide-react"
 import { Progress } from "@/components/ui/progress"
 import { cn } from "@/lib/utils"
 
@@ -57,7 +57,7 @@ export function VideoUpload({ onVideoUploaded, videoUrl, onClear }: VideoUploadP
         xhr.onerror = () => {
           console.error("Network error during upload")
           setIsUploading(false)
-          alert("Network error. Please check your connection and ensure the backend is running.")
+          alert("Network error. Please check your connection.")
         }
 
         xhr.send(formData)
@@ -94,21 +94,25 @@ export function VideoUpload({ onVideoUploaded, videoUrl, onClear }: VideoUploadP
 
   if (videoUrl) {
     return (
-      <div className="relative overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
-        <div className="flex items-center justify-between border-b border-border px-4 py-3">
-          <div className="flex items-center gap-2">
-            <FileVideo className="h-4 w-4 text-primary" />
-            <span className="text-sm font-medium text-foreground">{fileName}</span>
+      <div className="flex flex-col h-full bg-black/60 rounded-3xl overflow-hidden group/player">
+        <div className="flex items-center justify-between border-b border-white/10 px-6 py-4">
+          <div className="flex items-center gap-3">
+            <div className="h-6 w-6 rounded bg-blue-500/10 flex items-center justify-center">
+              <PlayCircle className="h-3.5 w-3.5 text-blue-400" />
+            </div>
+            <span className="text-xs font-bold text-slate-300 tracking-tight truncate max-w-[200px] uppercase">
+              {fileName}
+            </span>
           </div>
           <button
             onClick={onClear}
-            className="flex h-7 w-7 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+            className="flex h-7 w-7 items-center justify-center rounded-xl text-slate-500 transition-all hover:bg-red-500/10 hover:text-red-400 border border-transparent hover:border-red-500/20"
             aria-label="Remove video"
           >
-            <X className="h-3.5 w-3.5" />
+            <X className="h-4 w-4" />
           </button>
         </div>
-        <div className="aspect-video w-full bg-foreground/5">
+        <div className="flex-1 w-full relative">
           <video
             src={videoUrl}
             className="h-full w-full object-contain"
@@ -132,15 +136,14 @@ export function VideoUpload({ onVideoUploaded, videoUrl, onClear }: VideoUploadP
       onDrop={handleDrop}
       onClick={() => inputRef.current?.click()}
       className={cn(
-        "group relative cursor-pointer overflow-hidden rounded-2xl border-2 border-dashed transition-all duration-200",
+        "group relative flex flex-col items-center justify-center h-full cursor-pointer overflow-hidden rounded-3xl border border-dashed transition-all duration-300",
         isDragging
-          ? "border-primary bg-primary/5 shadow-lg shadow-primary/10"
-          : "border-border hover:border-primary/40 hover:bg-accent/50",
+          ? "border-blue-500/50 bg-blue-500/5"
+          : "border-white/10 hover:border-blue-500/30 hover:bg-white/5",
         isUploading && "pointer-events-none"
       )}
       role="button"
       tabIndex={0}
-      aria-label="Upload video file"
       onKeyDown={(e) => {
         if (e.key === "Enter" || e.key === " ") {
           inputRef.current?.click()
@@ -153,41 +156,49 @@ export function VideoUpload({ onVideoUploaded, videoUrl, onClear }: VideoUploadP
         accept="video/*"
         onChange={handleFileSelect}
         className="sr-only"
-        aria-label="Choose video file"
       />
 
       {isUploading ? (
-        <div className="flex flex-col items-center gap-4 px-6 py-12">
-          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10">
-            <FileVideo className="h-6 w-6 text-primary" />
-          </div>
-          <div className="w-full max-w-xs">
-            <div className="mb-2 flex items-center justify-between text-sm">
-              <span className="font-medium text-foreground">Uploading video...</span>
-              <span className="text-muted-foreground">
-                {Math.round(uploadProgress)}%
-              </span>
+        <div className="flex flex-col items-center gap-6 px-10 w-full">
+          <div className="relative">
+            <div className="h-16 w-16 rounded-2xl bg-blue-500/10 flex items-center justify-center">
+              <Loader2 className="h-8 w-8 text-blue-500 animate-spin" />
             </div>
-            <Progress value={uploadProgress} className="h-1.5" />
-            <p className="mt-2 text-center text-xs text-muted-foreground">{fileName}</p>
+          </div>
+          <div className="w-full max-w-sm space-y-4">
+            <div className="flex items-center justify-between text-[10px] font-bold text-blue-400 uppercase tracking-[0.2em]">
+              <span>Ingesting Video Stream</span>
+              <span>{Math.round(uploadProgress)}%</span>
+            </div>
+            <div className="h-1 w-full bg-white/5 rounded-full overflow-hidden">
+              <div 
+                className="h-full bg-blue-500 transition-all duration-300"
+                style={{ width: `${uploadProgress}%` }}
+              />
+            </div>
+            <p className="text-center text-[10px] text-slate-500 font-mono truncate">{fileName}</p>
           </div>
         </div>
       ) : (
-        <div className="flex flex-col items-center gap-3 px-6 py-12">
+        <div className="flex flex-col items-center gap-6 px-10">
           <div
             className={cn(
-              "flex h-12 w-12 items-center justify-center rounded-2xl transition-colors duration-200",
-              isDragging ? "bg-primary/15 text-primary" : "bg-secondary text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary"
+              "flex h-16 w-16 items-center justify-center rounded-2xl transition-all duration-300 border border-white/5",
+              isDragging 
+                ? "bg-blue-500 text-white shadow-lg shadow-blue-500/30" 
+                : "bg-white/5 text-slate-500 group-hover:bg-blue-500/10 group-hover:text-blue-400 group-hover:border-blue-500/20"
             )}
           >
-            <Upload className="h-6 w-6" />
+            <Upload className="h-7 w-7" />
           </div>
-          <div className="text-center">
-            <p className="text-sm font-medium text-foreground">
-              {isDragging ? "Drop your video here" : "Drop a video file or click to browse"}
+          <div className="text-center space-y-2">
+            <p className="text-sm font-bold text-slate-200 tracking-tight uppercase">
+              {isDragging ? "Release to Ingest" : "Source Media Input"}
             </p>
-            <p className="mt-1 text-xs text-muted-foreground">
-              Supports MP4, WebM, MOV up to 500MB
+            <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest leading-relaxed">
+              Drag & Drop Video or <span className="text-blue-400 hover:underline">Browse Storage</span>
+              <br/>
+              MP4, WEBM, MOV • MAX 500MB
             </p>
           </div>
         </div>
