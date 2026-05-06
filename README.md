@@ -1,8 +1,8 @@
-# vide0_Engine 🚀
+# vide0_Engine 
 
 A professional-grade, high-performance semantic video search platform. **vide0_Engine** leverages OpenAI Whisper for high-accuracy transcription, Sentence Transformers for neural embeddings, and FAISS for millisecond-latency vector retrieval.
 
-## 🌟 Key Features
+## Key Features
 - **Pro-Utility Dashboard**: A sleek, two-column interface designed for professional video intelligence.
 - **Neural Semantic Search**: Find specific moments using natural language instead of just keywords.
 - **Persistent Vector Intelligence**: High-performance FAISS vector store with on-disk persistence for durable memory.
@@ -11,7 +11,7 @@ A professional-grade, high-performance semantic video search platform. **vide0_E
 - **Integrated Video Player**: Instant timestamp jumping directly from semantic search results.
 - **Ethereal Aesthetic**: Modern glassmorphic UI with organic motion backgrounds.
 
-## 🛠 Prerequisites
+##  Prerequisites
 - **Python 3.9+**
 - **Node.js 18+**
 - **Docker & Docker Compose** (for PostgreSQL and Redis)
@@ -19,7 +19,7 @@ A professional-grade, high-performance semantic video search platform. **vide0_E
   - macOS: `brew install ffmpeg`
   - Linux: `sudo apt install ffmpeg`
 
-## 🚀 Setup & Execution
+## Setup & Execution
 
 ### 1. Automatic Initialization
 Ensure Docker is running, then execute the setup script to prepare the environment:
@@ -55,11 +55,10 @@ cd frontend
 npm run dev
 ```
 
-## 🏗 Architecture
+##  Architecture
 1. **Ingestion**: Videos are uploaded to local storage, and metadata is persisted in **PostgreSQL**.
 2. **Neural Pipeline**: **Celery** triggers a background task that uses **Whisper** to transcribe audio and **Sentence Transformers** to generate 384-dimensional embeddings.
 3. **Persistent Indexing**: Neural segments are stored in a persistent **FAISS** index, allowing for sub-millisecond similarity matching across large video libraries.
 4. **Semantic Retrieval**: Queries are embedded into the same vector space, and the closest semantic matches are returned as interactive "Reply" cards in the UI.
 
----
-Created with precision by **vide0_Engine Team**.
+
